@@ -1,49 +1,86 @@
 <template>
-    <div>
-				<div id="Header">
-					<div id="SidePanelButton" @click="MovePanel()" >
-					</div>
-				</div>
-        <div id="SidePanel" :class="{notShow: !ShowPanel, show: ShowPanel}">
-            <ul style="padding:0">
-                <li v-for="(nav, i) in SideNavs" :key="i">
-                  <Button :text="nav.text" :fontsize="'25px'" :to="{ name: nav.name }" :colorIndex="1" :wide="true" />
-                </li>
-            </ul>
-        </div>
-    </div>
+  <div>
+    <v-app-bar
+      absolute
+      color="primary darken-3"
+      dark
+      shrink-on-scroll
+      prominent
+      src="https://picsum.photos/1920/1080?random"
+      fade-img-on-scroll
+      scroll-target="#contentWindow"
+      scroll-threshold="500"
+    >
+      <template v-slot:img="{ props }">
+        <v-img v-bind="props" gradient="to top right, rgba(55,236,186,.7), rgba(25,32,72,.7)"></v-img>
+      </template>
+
+      <v-app-bar-nav-icon @click.stop="MovePanel()"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Sport orginizer</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <!-- Боковая панель -->
+    <v-navigation-drawer v-model="ShowPanel" absolute temporary>
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title>John Leider</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list dense>
+        <v-list-item v-for="(nav, index) in SideNavs" :key="index" link>
+          <v-list-item-icon>
+            <v-icon>{{ nav.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ nav.text }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+  </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import Button from './Button'
-import {mapGetters} from 'vuex'
+import Vue from "vue";
+import { mapGetters } from "vuex";
 
 export default Vue.extend({
-  name:"CoverElements",
-  components:{
-    Button
+  name: "CoverElements",
+  data() {
+    return {
+      ShowPanel: false,
+    };
   },
-	data(){
-		return{
-			ShowPanel: false
-		}
-	},
-	methods:{
-		MovePanel(){
-			this.ShowPanel = !this.ShowPanel
-		}
-	},
-	computed:{ 
-			...mapGetters(["SideNavs"])
-			}
-})
+  methods: {
+    MovePanel() {
+      this.ShowPanel = !this.ShowPanel;
+    },
+  },
+  computed: {
+    ...mapGetters(["SideNavs"]),
+  },
+});
 </script>
 
 <style>
-#Header{
-position: fixed;
-	left:0px;
+#Header {
+  position: fixed;
+  left: 0px;
   background-color: var(--color21);
   height: 55px;
   width: 100%;
@@ -51,37 +88,37 @@ position: fixed;
   flex-direction: row;
   z-index: 1001;
 }
-#SidePanelButton{
-	width: 40px;
-	height: 40px;
-	background-color: var(--color32);
-	margin-top: calc(55px /2 - 20px);
-	margin-left: 10px;
+#SidePanelButton {
+  width: 40px;
+  height: 40px;
+  background-color: var(--color32);
+  margin-top: calc(55px / 2 - 20px);
+  margin-left: 10px;
 }
-#SidePanelButton:hover{
-	cursor: pointer;
-	transform: scale(1.15);
+#SidePanelButton:hover {
+  cursor: pointer;
+  transform: scale(1.15);
 }
-#SidePanel{
-    background-color: var(--color12);
-    position: fixed;
-    z-index: 1000;
-    width: 300px;
-    height: 100%;
-		padding-top: 55px;
-    border-style: solid;
-    border-color: var(--color32);
-    border-width: 0 5px 0 0 ;
+#SidePanel {
+  background-color: var(--color12);
+  position: fixed;
+  z-index: 1000;
+  width: 300px;
+  height: 100%;
+  padding-top: 55px;
+  border-style: solid;
+  border-color: var(--color32);
+  border-width: 0 5px 0 0;
 }
-#SidePanel.show{
- left: 0;
- transition: .2s ease;
+#SidePanel.show {
+  left: 0;
+  transition: 0.2s ease;
 }
-#SidePanel.notShow{
- left: -300px;
- transition: .2s ease
+#SidePanel.notShow {
+  left: -300px;
+  transition: 0.2s ease;
 }
 #SidePanel li {
-    list-style-type: none; /* Убираем маркеры */
-   }
+  list-style-type: none; /* Убираем маркеры */
+}
 </style>

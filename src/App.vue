@@ -1,24 +1,26 @@
 <template>
-  <div id="app">
+  <v-app id="app" class="overflow-hidden">
     <CoverElements />
-    <div id="content">
-      <transition name="slide-fade" mode="out-in">
-       <router-view/>
-      </transition>
-    </div>
-  </div>
+    <v-sheet id="contentWindow" class="overflow-y-auto" max-height="100vh">
+      <div id="content">
+        <transition name="slide-fade" mode="out-in">
+        <router-view/>
+        </transition>
+      </div>
+    </v-sheet>
+  </v-app>
 </template>
 
 <script>
 import Vue from 'vue'
 import CoverElements from './components/CoverElements'
-
 export default Vue.extend({
   name: "App",
   components:{
     CoverElements
   },
   mounted(){
+    this.$vuetify.theme.dark = true;
     const body = document.body;
     body.classList.add('commonTheme')
   }
@@ -52,19 +54,17 @@ html{
 }
 #app {
   overflow:hidden;
+  font-family: 'Jura';
+  font-size: 20px;
 }
-body{
-  background-color: var(--color11);
-  margin:auto;
-}
-
 #content{
   max-width: 600px;
   display: block;
   margin-left: auto;
   margin-right: auto;
   padding-top: 85px;
-  color: var(--textcolor)
+  color: var(--textcolor);
+  height: 10000px
 }
 a{
   text-decoration: none
@@ -117,7 +117,6 @@ select{
 .long-fade-enter{
   opacity: 0;
 }
-
 .slide-fade-enter-active {
   transition: all .3s ease;
 }
@@ -132,7 +131,6 @@ select{
   transform: translateX(-100px);
   opacity: 0;
 }
-
 .fade-enter-active {
   transition: all 0.1s;
 }
@@ -145,5 +143,4 @@ select{
 .fade-enter{
   opacity: 0;
 }
-
 </style>
