@@ -1,28 +1,37 @@
 <template>
   <v-app id="app" class="overflow-hidden">
     <CoverElements />
-    <v-sheet id="contentWindow" class="overflow-y-auto" max-height="100vh">
-      <div id="content">
+    <div id="contentWindow" class="overflow-y-auto pt-11" style="max-height:100vh">
+      <ConfirmEmail />
+      <v-sheet id="content">
         <transition name="slide-fade" mode="out-in">
-        <router-view/>
+          <router-view class="mx-3" style="min-height: 80vh"/>
         </transition>
-      </div>
-    </v-sheet>
+        <Footer class="mt-15" />
+      </v-sheet>
+    </div>
   </v-app>
 </template>
 
 <script>
 import Vue from 'vue'
 import CoverElements from './components/CoverElements'
+import Footer from './components/Footer.vue'
+import ConfirmEmail from './components/ConfirmEmail.vue'
+
+import {mapActions} from 'vuex'
+
 export default Vue.extend({
   name: "App",
   components:{
-    CoverElements
+    CoverElements, Footer, ConfirmEmail
+  },
+  methods:{
+    ...mapActions(['login'])
   },
   mounted(){
     this.$vuetify.theme.dark = true;
-    const body = document.body;
-    body.classList.add('commonTheme')
+    this.login()
   }
 })
 </script>
@@ -64,7 +73,7 @@ html{
   margin-right: auto;
   padding-top: 85px;
   color: var(--textcolor);
-  height: 10000px
+  min-height: 100vh
 }
 a{
   text-decoration: none
@@ -74,33 +83,6 @@ a:visited{
 }
 #nav a.router-link-exact-active {
   color: #42b983;
-}
-</style>
-<!-- Элементы формы -->
-<style>
-textarea{
-  font-family: 'Jura';
-  background-color: var(--color12);
-  border-style: solid;
-  border-width: 3px;
-  border-color: var(--color31);
-  padding: 0.5rem
-}
-input{
-  font-family: 'Jura';
-  background-color: var(--color12);
-  border-style: solid;
-  border-width: 3px;
-  border-color: var(--color31);
-  padding: 0.3rem
-}
-select{
-  font-family: 'Jura';
-  background-color: var(--color12);
-  border-style: solid;
-  border-width: 3px;
-  border-color: var(--color21);
-  padding: 0.3rem
 }
 </style>
 <!-- Переходы -->

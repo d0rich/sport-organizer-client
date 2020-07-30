@@ -11,7 +11,7 @@ export default new Vuetify({
         text: colors.shades,
         bg: colors.grey,
         primary: colors.purple,
-        secondary: colors.red
+        secondary: colors.teal
       }
     }
   }

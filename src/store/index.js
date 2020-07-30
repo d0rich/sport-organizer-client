@@ -3,21 +3,28 @@ import Vuex from 'vuex'
 
 import user from './modules/user'
 import cover from './modules/cover'
+import fetch from './modules/fetch-data'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    state: {
-        server: 'http://localhost:8000',
-        send_params(params) {
-            //[['key', param],['key', param],['key', param]]
-            let res = `?${params[0][0]}=${params[0][1]}`
-            params.shift()
-            params.forEach(param => {
-                res += `&${param[0]}=${param[1]}`
-            });
-            return res
-        }
+  state: {
+    //server: 'http://localhost:3000',
+    server: 'https://sport-organizer-server.herokuapp.com',
+    loader: false
+  },
+  mutations: {
+    loaderOn(state) {
+      state.loader = true
     },
-    modules: { user, cover }
+    loaderOff(state) {
+      state.loader = false
+    }
+  },
+  getters: {
+    onLoad(state) {
+      return state.loader
+    }
+  },
+  modules: { user, cover, fetch }
 })
