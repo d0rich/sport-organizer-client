@@ -1,7 +1,7 @@
 <template>
     <div class="pa-1">
         <v-row class="text-h4 mb-3" color="text">Авторизация</v-row>
-        <v-form ref="form" v-model="valid">
+        <v-form ref="form" v-model="valid" @submit.prevent="login_req()">
             <v-row cols="12" md="4">
                 <v-text-field
                     v-model="loginData.login"
@@ -33,7 +33,7 @@
                     </v-btn>
                 </router-link>
 
-                <v-btn color="primary" :disabled="!valid || log_req" :loading="log_req" class="ml-3" @click="login_req()">
+                <v-btn color="primary" :disabled="!valid || log_req" :loading="log_req" class="ml-3" type="submit">
                 Войти
                 </v-btn>
 

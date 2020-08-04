@@ -3,12 +3,12 @@
     <CoverElements />
     <div id="contentWindow" class="overflow-y-auto pt-11" style="max-height:100vh">
       <ConfirmEmail />
-      <v-sheet id="content">
+      <div id="content">
         <transition name="slide-fade" mode="out-in">
-          <router-view class="mx-3" style="min-height: 80vh"/>
+          <router-view  style="min-height: 80vh"/>
         </transition>
-        <Footer class="mt-15" />
-      </v-sheet>
+      </div> 
+      <Footer class="mt-15" />
     </div>
   </v-app>
 </template>
@@ -19,15 +19,11 @@ import CoverElements from './components/CoverElements'
 import Footer from './components/Footer.vue'
 import ConfirmEmail from './components/ConfirmEmail.vue'
 
-import {mapActions} from 'vuex'
 
 export default Vue.extend({
   name: "App",
   components:{
     CoverElements, Footer, ConfirmEmail
-  },
-  methods:{
-    ...mapActions(['login'])
   },
   mounted(){
     this.$vuetify.theme.dark = true;
@@ -42,19 +38,7 @@ export default Vue.extend({
   src: url('./assets/fonts/Jura-VariableFont_wght.ttf');
 }
 </style>
-<!-- Темы -->
-<style>
-.commonTheme{
-  --color11: #131414;
-  --color12: #212426;
-  --color21: #285985;
-  --color22: #2793F2;
-  --color31: #662020;
-  --color32: #f22727;
-  --textcolor: white;
-  transition: ease 0.3s;
-}
-</style>
+
 <!-- Основные настройки -->
 <style>
 html{
@@ -72,7 +56,6 @@ html{
   margin-left: auto;
   margin-right: auto;
   padding-top: 85px;
-  color: var(--textcolor);
   min-height: 100vh
 }
 a{

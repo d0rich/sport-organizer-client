@@ -6,7 +6,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapActions, mapState } from 'vuex'
 import crypto from 'crypto'
 
 Vue.config.productionTip = false
@@ -17,20 +17,19 @@ Vue.prototype.$crypto = crypto;
 
 Vue.mixin({
   data() {
-    return {
-
-    }
+    return {}
   },
   computed: {
-    ...mapGetters(['onLoad']),
+    ...mapGetters(['onLoad', 'modeName']),
+    ...mapState(['server']),
     Today() {
       const date = new Date()
-
       return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
     }
   },
   methods: {
-    ...mapMutations(['loaderOn', 'loaderOff']),
+    ...mapMutations(['loaderOn', 'loaderOff', 'setMode']),
+    ...mapActions(['sportsmanMode', 'trainerMode', 'login']),
     send_params(params) {
       //[['key', param],['key', param],['key', param]]
       let res = `?${params[0][0]}=${params[0][1]}`

@@ -86,6 +86,11 @@ export default {
         return state.auth_user.Login
       else return ''
     },
+    auth_id(state) {
+      if (state.auth_user)
+        return state.auth_user.ID
+      else return ''
+    },
     user_confirmed(state) {
       if (state.auth_user == null) return true
       if (state.auth_user.ActivateCode == null) return true

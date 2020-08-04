@@ -237,11 +237,15 @@ export default {
   },
   mounted() {
     this.$axios
-      .get(`${this.$store.state.server}/get_reg_inf`)
-      .then((res) => {
-        this.genders = res.data.genders
-        this.sports = res.data.sports
-        this.disableGS = false
+      .get(`${this.$store.state.server}/gendersDict`)
+      .then((genders) => {
+        this.$axios
+          .get(`${this.$store.state.server}/sportsDict`)
+          .then(sports =>{
+            this.genders = genders.data
+            this.sports = sports.data
+            this.disableGS = false
+          })
       })
   },
 };

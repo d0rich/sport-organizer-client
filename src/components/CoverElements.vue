@@ -37,7 +37,11 @@
 
       <v-divider></v-divider>
 
-      <v-list dense>
+      <v-switch v-model="Tmode" inset :label="modeName" class="px-6" />
+
+      <v-divider></v-divider>
+
+      <v-list>
 
         <router-link v-for="(nav, index) in SideNavs" :key="index" :to="{name:nav.name, params:{login: auth_login}}">
           <v-list-item link>
@@ -45,7 +49,14 @@
               <v-icon>{{ nav.icon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>{{ nav.text }}</v-list-item-title>
+              <v-badge v-if="nav.badge" :content="get_auth_user[nav.badgeKey].length.toString()" :value="nav.badge" inline >
+                <v-list-item-title>
+                  {{ nav.text }}
+                </v-list-item-title>  
+              </v-badge>
+              <v-list-item-title v-else>
+                  {{ nav.text }}
+                </v-list-item-title>  
             </v-list-item-content>
           </v-list-item>
         </router-link>
@@ -73,6 +84,7 @@ export default Vue.extend({
   data() {
     return {
       ShowPanel: false,
+      Tmode: false
     };
   },
   methods: {
@@ -82,8 +94,18 @@ export default Vue.extend({
     },
   },
   computed: {
-    ...mapGetters(["SideNavs", 'auth_username', 'auth_login', 'auth_status']),
+    ...mapGetters(["SideNavs", 'auth_username', 'auth_login', 'auth_status', 'get_auth_user']),
   },
+  watch:{
+    Tmode(){
+      if(this.Tmode) this.trainerMode()
+      else this.sportsmanMode()
+    }
+  },
+  mounted(){
+    this.setMode()
+    this.Tmode = this.$store.state.trainerMode
+  }
 });
 </script>
 

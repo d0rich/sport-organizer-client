@@ -1,4 +1,6 @@
 import axios from 'axios'
+import Section from './fetch-modules/section.js'
+import Group from './fetch-modules/group.js'
 
 export default {
   state: {
@@ -27,5 +29,9 @@ export default {
     user_profile(state) {
       return state.watch_profile
     }
+  },
+  modules: {
+    Section,
+    Group
   }
 }
