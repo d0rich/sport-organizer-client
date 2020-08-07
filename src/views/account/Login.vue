@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-1">
+    <div class="pa-8">
         <v-row class="text-h4 mb-3" color="text">Авторизация</v-row>
         <v-form ref="form" v-model="valid" @submit.prevent="login_req()">
             <v-row cols="12" md="4">

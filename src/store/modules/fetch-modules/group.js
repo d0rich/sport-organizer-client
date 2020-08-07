@@ -1,12 +1,13 @@
 import axios from 'axios'
+import {Group} from "@/classes";
 
 export default {
   state: {
-    group: {}
+    group: new Group()
   },
   mutations: {
     set_group(state, grData) {
-      state.group = grData
+      state.group = new Group(grData)
     }
   },
   actions: {
@@ -18,7 +19,7 @@ export default {
             ctx.commit('set_group', res.data)
             resolve()
           })
-          .catch(err => { console.error(err), reject(err) })
+          .catch(err => { console.error(err); reject(err) })
       })
     }
 

@@ -22,18 +22,18 @@ export default new Vuex.Store({
       state.loader = false
     },
     setMode(state) {
-      if (localStorage.getItem('trainerMode') != '')
+      if (localStorage.getItem('trainerMode') !== '')
         state.trainerMode = JSON.parse(localStorage.getItem('trainerMode'))
     },
 
   },
   actions: {
     trainerMode(ctx) {
-      localStorage.setItem('trainerMode', true)
+      localStorage.setItem('trainerMode', 'true')
       ctx.commit('setMode')
     },
     sportsmanMode(ctx) {
-      localStorage.setItem('trainerMode', false)
+      localStorage.setItem('trainerMode', 'false')
       ctx.commit('setMode')
     }
   },
@@ -42,7 +42,7 @@ export default new Vuex.Store({
       return state.loader
     },
     modeName(state) {
-      if (state.trainerMode == true) return 'Режим тренера'
+      if (state.trainerMode === true) return 'Режим тренера'
       else return 'Режим спортсмена'
     }
   },

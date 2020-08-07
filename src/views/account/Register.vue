@@ -1,7 +1,7 @@
 <template>
-  <div class="pa-1">
+  <div class="pa-8">
     <v-row class="text-h4 mb-3" color="text">Регистрация</v-row>
-    <v-form ref="form" v-model="valid">
+    <v-form ref="form" v-model="valid" @submit.prevent="Register()">
       <v-row cols="12" md="4">
         <v-text-field
           v-model="regData.Login"
@@ -63,7 +63,7 @@
             v-model="bdateFormatted"
             label="Дата рождения"
             :rules="[rules.req]"
-            prepend-icon="event"
+            prepend-icon="mdi-calendar"
             readonly
             v-on="on"
             required
@@ -135,7 +135,7 @@
           @click:append="showP = !showP"
         ></v-text-field>
       </v-row>
-      <v-btn color="primary" :loading="regRequest" :disabled="regRequest" block @click="Register()">
+      <v-btn color="primary" :loading="regRequest" :disabled="regRequest" type="submit" block>
         Зарегестрироваться
       </v-btn>
 

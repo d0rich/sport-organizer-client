@@ -27,7 +27,7 @@
             v-model="newGroup.AgeTypeID"
             :items="AgeTypes"
             :rules="[rules.req]"
-            item-text="Name"
+            item-text="ItemName"
             item-value='ID'
             label="Укажите возрастную группу"
             outlined
@@ -36,19 +36,28 @@
             :disabled="disableAT"
             ></v-select>
     </v-row>
+
     <v-row cols="12" md="4" color=error>
         {{errMessage}}
     </v-row>
     <v-btn color=primary block type=submit :loading="create_req" :disabled="create_req">
-        Прикрепить новую группу
+        Прикрепить
     </v-btn>
+    <v-row cols="12" class="mt-4">
+      <CreateAT @created="fetchAT()" />
+    </v-row>
   </v-form>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import {AgeType} from "@/classes";
+import CreateAT from '../age-type/Create'
 export default {
   name: "CreateGroup",
+  components: {
+    CreateAT
+  },
   data() {
     return {
       create_req: false,
@@ -102,7 +111,10 @@ export default {
         this.$axios
             .get(`${this.server}/get_at?UserID=${this.auth_id}`)
             .then((AgeTypes) => {
-            this.AgeTypes = AgeTypes.data;
+            this.AgeTypes = []
+             AgeTypes.data.forEach(at => {
+               this.AgeTypes.push(new AgeType(at))
+             })
             this.disableAT = false
             })
             .catch(err => console.error(err))

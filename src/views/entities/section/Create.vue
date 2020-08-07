@@ -34,8 +34,8 @@
                 :disabled="disableS"
                 ></v-select>
             </v-row>
-            <v-btn color="primary" :loading="crRequest && this.sectionData.CreatorID != ''" 
-                :disabled="crRequest && this.sectionData.CreatorID != ''" block @click="Create()">
+            <v-btn color="primary" :loading="crRequest && this.sectionData.CreatorID !== ''"
+                   :disabled="crRequest && this.sectionData.CreatorID !== ''" block @click="create()">
                 Создать секцию
             </v-btn>
         </v-form>
@@ -73,15 +73,15 @@ export default {
         ...mapGetters(['get_auth_user']),
     },
     methods:{
-        Create(){
+        create(){
             if(this.valid)
             {
                 this.crRequest = true
                 this.$axios.post(`${this.$store.state.server}/createSection`, this.sectionData)
-                    .then(res=>{
-                        console.log(res)
+                    .then(res =>{
                         this.crSuccess = true
                         this.login()
+                        this.$router.push({name: 'Section', params: { sectionID: res.data.ID }})
                         })
             }
             else
@@ -91,8 +91,8 @@ export default {
             }
     },
     watch:{
-        get_auth_user(val){
-            if(val) this.sectionData.CreatorID = val.ID
+        get_auth_user(){
+            this.sectionData.CreatorID = this.get_auth_user.ID
         }
     },
     mounted(){
@@ -100,6 +100,7 @@ export default {
           .get(`${this.$store.state.server}/sportsDict`)
           .then(sports =>{
             this.sports = sports.data
+            this.sectionData.CreatorID = this.get_auth_user.ID
             this.disableS = false
           })
     }

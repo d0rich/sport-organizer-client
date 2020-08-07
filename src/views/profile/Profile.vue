@@ -18,6 +18,12 @@
       </div>
     </v-skeleton-loader>
 
+    <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="sentences" class="pa-2">
+      <div class="">
+        {{`Пол: ${user_profile.Gender.Name}`}}
+      </div>
+    </v-skeleton-loader>
+
     <v-skeleton-loader v-if="user_profile.Weight" :loading="onLoad" transition="fade-transition" type="sentences" class="pa-2">
       <div class="">
         {{`Вес: ${user_profile.Weight.toFixed(2)} кг`}}
@@ -46,9 +52,12 @@
     </v-skeleton-loader>
     <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="chip" class="pa-2">
         <div>
-          <v-chip v-for="group in user_profile.TraineeIn" :key="group.ID" class="ma-2" color="primary">
-            {{group.Name}}
-          </v-chip>
+          <router-link v-for="group in user_profile.TraineeIn" :key="group.ID" :to="{name: 'Group', params: {groupID: group.ID} }">
+            <v-chip  class="ma-2" color="primary">
+              {{group.Name}}
+            </v-chip>
+          </router-link>
+
         </div>
     </v-skeleton-loader>
 

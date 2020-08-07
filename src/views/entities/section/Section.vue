@@ -48,9 +48,9 @@
             </v-btn>
         </v-skeleton-loader>
 
-        <v-dialog v-model="crGroup" max-width="600">
+        <v-dialog scrollable v-model="crGroup" max-width="600" >
             <v-card>
-            <CreateGroup @created="Created()" />
+            <CreateGroup @created="group_created()" />
             </v-card>
         </v-dialog>
 
@@ -88,7 +88,7 @@ export default {
     },
     methods:{
         ...mapActions(['fetch_section_data']),
-        Created(){
+        group_created(){
             this.crGroup = false
             this.loaderOn()
             this.fetch_section_data(this.$route.params.sectionID)
@@ -99,7 +99,7 @@ export default {
         }
     },
     mounted(){
-    this.Created()
+    this.group_created()
   }
 }
 </script>

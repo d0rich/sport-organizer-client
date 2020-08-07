@@ -1,14 +1,15 @@
 import axios from 'axios'
 import Section from './fetch-modules/section.js'
 import Group from './fetch-modules/group.js'
+import {User} from '../../classes'
 
 export default {
   state: {
-    watch_profile: {}
+    watch_profile: new User()
   },
   mutations: {
     set_watch_profile(state, data) {
-      state.watch_profile = data
+      state.watch_profile = new User(data)
     }
   },
   actions: {
@@ -20,7 +21,7 @@ export default {
             ctx.commit('set_watch_profile', res.data)
             resolve()
           })
-          .catch(err => { console.error(err), reject(err) })
+          .catch(err => { console.error(err); reject(err) })
       })
 
     }

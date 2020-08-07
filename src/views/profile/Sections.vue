@@ -1,12 +1,16 @@
 <template>
     <div>
         <v-list>
-            <v-subheader>Секции пользователя {{user_profile.Login}} ({{secNumber}}):</v-subheader>
+          <v-list-item>
+            <v-list-item-title>Секции пользователя {{user_profile.Login}} ({{user_profile.Sections.length}}):</v-list-item-title>
+          </v-list-item>
+          <v-divider/>
             <v-list-item link>
               <router-link :to="{name: 'CreateSection'}">
-                <v-list-item-action >Создать секцию...</v-list-item-action>
+                <v-list-item-action class="secondary--text lighten-3" >Создать секцию...</v-list-item-action>
               </router-link>
             </v-list-item>
+          <v-divider/>
             <router-link v-for="section in user_profile.Sections" :key="section.ID" :to="{ name: 'Section', params: { sectionID: section.ID } }">
               <v-list-item link >
                   {{section.Name}}

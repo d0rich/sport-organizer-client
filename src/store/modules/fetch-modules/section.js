@@ -18,7 +18,7 @@ export default {
             ctx.commit('set_section', res.data)
             resolve()
           })
-          .catch(err => { console.error(err), reject(err) })
+          .catch(err => { console.error(err); reject(err) })
       })
     }
 

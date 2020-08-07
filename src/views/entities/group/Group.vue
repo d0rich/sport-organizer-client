@@ -5,6 +5,11 @@
                 {{`Группа "${watch_group.Name}"`}}
             </div>
         </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
+        <div class="text-h8">
+          {{`Возрастная группа: ${watch_group.AgeType.ItemName}`}}
+        </div>
+      </v-skeleton-loader>
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
             <div class="text-h8">
                 {{`Описание группы:`}}
@@ -18,8 +23,8 @@
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
             <div class="text-h8">
                 {{`Группа прикреплена к секции:`}}
-                <router-link :to="{name: 'Section', params:{ sectionID: watch_group.SectionID }}" class="text--primary">
-                    {{sectionName}}
+                <router-link :to="{name: 'Section', params:{ sectionID: watch_group.Section.ID}}" class="text--primary">
+                    {{watch_group.Section.Name}}
                 </router-link>
             </div>
         </v-skeleton-loader>
@@ -31,7 +36,7 @@
         </v-skeleton-loader>
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="chip" class="pa-2">
             <div>
-                <router-link v-for="trainer in trainers" :key="trainer.ID" :to="{name: 'Profile', params: { login: trainer.Login }}">
+                <router-link v-for="trainer in watch_group.Trainers" :key="trainer.ID" :to="{name: 'Profile', params: { login: trainer.Login }}">
                     <v-chip  class="ma-2" color="primary">
                         {{`${trainer.Name} ${trainer.Surname} (${trainer.Login})`}}
                     </v-chip>
@@ -46,18 +51,26 @@
         </v-skeleton-loader>
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="chip" class="pa-2">
             <div>
-                <router-link v-for="trainee in trainees" :key="trainee.ID" :to="{name: 'Profile', params: { login: trainee.Login }}">
+                <router-link v-for="trainee in watch_group.Trainees" :key="trainee.ID" :to="{name: 'Profile', params: { login: trainee.Login }}">
                     <v-chip  class="ma-2" color="primary">
                         {{`${trainee.Name} ${trainee.Surname} (${trainee.Login})`}}
                     </v-chip>
                 </router-link>
             </div>
         </v-skeleton-loader>
-        <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="button" class="pa-2">
-            <v-btn color=primary :loading="cr_inv_req" :disabled="cr_inv_req" @click="GenInv()">
-                Создать пригласительный код
-            </v-btn>
+        <v-skeleton-loader v-if="showInvites" :loading="onLoad" transition="fade-transition" type="list-item">
+          <v-list style="max-height: 300px; overflow-y: scroll">
+            <v-subheader>Пригласительные коды:</v-subheader>
+            <v-list-item v-for="invite in invites" :key="invite.Code" >
+              {{invite.Code}}
+            </v-list-item>
+            <v-divider/>
+            <v-list-item link>
+              <v-list-item-action color="primary" @click="genInv()">Создать пригласительный код</v-list-item-action>
+            </v-list-item>
+          </v-list>
         </v-skeleton-loader>
+
     </div>    
 </template>
 
@@ -67,43 +80,60 @@ export default {
     name: 'Group',
     data(){
         return{
-            cr_inv_req: false
+            cr_inv_req: false,
+            invites: []
         }
     },
     computed:{
-        ...mapGetters(['watch_group']),
-        sectionName(){
-            if (this.watch_group.Section) return this.watch_group.Section.Name
-            else return null 
-        },
-        trainers(){
-            if(this.watch_group) return this.watch_group.Trainers
-            else return []
-        },
-        trainees(){
-            if(this.watch_group) return this.watch_group.Trainees
-            else return []
+        ...mapGetters(['watch_group', 'get_auth_user']),
+        showInvites(){
+          return this.get_auth_user.ID === this.watch_group.Section.UserID
         }
     },
     methods:{
         ...mapActions(['fetch_group_data']),
-        GenInv(){
+        genInv(){
             this.cr_inv_req = true
             this.$axios
             .post(`${this.server}/createInvitation`, {EntranceNum: 1, GroupID: this.$route.params.groupID})
-            .then(res=>{
-                console.log(res)
+            .then(()=>{
                 this.cr_inv_req = false
+                this.getInvites()
             })
             .catch(err => console.error(err))
-        }
+        },
+      getInvites(){
+          return new Promise((resolve, reject) => {
+            if(this.showInvites) {
+              this.$axios
+                  .get(`${this.server}/get_invitations?GroupID=${this.$route.params.groupID}`)
+                  .then(res => {
+                    this.invites = res.data
+                    resolve()
+                  })
+                  .catch(err => {
+                    console.error(err)
+                    reject(err)
+                  })
+            }
+            else {
+              resolve()
+            }
+          })
+
+      }
+    },
+    watch:{
+      get_auth_user(){
+        this.getInvites()
+      }
     },
     mounted(){
         this.loaderOn()
         this.fetch_group_data(this.$route.params.groupID)
             .then(()=>{
-                console.log(this.watch_group)
-                this.loaderOff()
+              this.getInvites()
+              .then(() => this.loaderOff())
             })
     },
 }
