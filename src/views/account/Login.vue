@@ -67,7 +67,7 @@ export default {
         ...mapActions(['login']),
         login_req(){
             this.log_req = true
-            this.$axios.post(`${this.$store.state.server}/authorize`, this.loginData)
+            this.$axios.post(`${this.$store.state.server}/account/authorize`, this.loginData)
                 .then(res => {
                     this.login(res.data)
                         .then(()=>{this.$router.push({name: 'Profile', params: {login: this.loginData.login}})})

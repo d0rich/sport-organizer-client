@@ -221,7 +221,7 @@ export default {
           if (err) console.log(err) ;
           this.regData.Password = key.toString('hex')
           this.regRequest = true
-          this.$axios.post(`${this.$store.state.server}/register`, this.regData)
+          this.$axios.post(`${this.$store.state.server}/account/register`, this.regData)
             .then(res=>{
               console.log(res)
               this.regSuccess = true
@@ -237,10 +237,10 @@ export default {
   },
   mounted() {
     this.$axios
-      .get(`${this.$store.state.server}/gendersDict`)
+      .get(`${this.$store.state.server}/dictionaries/genders`)
       .then((genders) => {
         this.$axios
-          .get(`${this.$store.state.server}/sportsDict`)
+          .get(`${this.$store.state.server}/dictionaries/sports`)
           .then(sports =>{
             this.genders = genders.data
             this.sports = sports.data

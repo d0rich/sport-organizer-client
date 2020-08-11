@@ -77,7 +77,7 @@ export default {
             if(this.valid)
             {
                 this.crRequest = true
-                this.$axios.post(`${this.$store.state.server}/createSection`, this.sectionData)
+                this.$axios.post(`${this.$store.state.server}/sections/create`, this.sectionData)
                     .then(res =>{
                         this.crSuccess = true
                         this.login()
@@ -97,7 +97,7 @@ export default {
     },
     mounted(){
         this.$axios
-          .get(`${this.$store.state.server}/sportsDict`)
+          .get(`${this.$store.state.server}/dictionaries/sports`)
           .then(sports =>{
             this.sports = sports.data
             this.sectionData.CreatorID = this.get_auth_user.ID

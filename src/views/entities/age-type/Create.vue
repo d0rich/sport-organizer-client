@@ -92,7 +92,7 @@ name: "CreateAgeType",
       {
         this.create_req = true
         this.$axios
-            .post(`${this.server}/createAT`, this.newAT)
+            .post(`${this.server}/age-types/create`, this.newAT)
             .then(() => {
               this.create_req = false
               this.newAT.Name = ''

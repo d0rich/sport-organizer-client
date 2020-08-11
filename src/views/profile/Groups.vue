@@ -65,7 +65,7 @@ name: "Groups",
       if(this.valid){
         this.invReq = true
         this.$axios
-            .post(`${this.server}/useInvitaion`, {ID: this.get_auth_user.ID , invCode: this.invCode})
+            .post(`${this.server}/groups/trainees/invitaions/use`, {ID: this.get_auth_user.ID , invCode: this.invCode})
             .then(() => {
               this.fetch_profile_data(this.$route.params.login)
               this.invReq = false

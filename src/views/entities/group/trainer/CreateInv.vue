@@ -50,7 +50,7 @@ name: "TrainerCreateInv",
       this.success = false
       this.error = false
       this.$axios
-        .post(`${this.server}/inviteTrainer`, { Login: this.newTrainer, GroupID: this.$route.params.groupID})
+        .post(`${this.server}/groups/trainers/invitations/invite`, { Login: this.newTrainer, GroupID: this.$route.params.groupID})
         .then(() => {
           this.success = true
           this.error = false

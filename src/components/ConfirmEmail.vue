@@ -62,7 +62,7 @@ export default {
             if(this.valid)
             {
                 this.act_req = true
-                this.$axios.post(`${this.$store.state.server}/act-account`, {login: this.auth_login, activateCode: this.actCode})
+                this.$axios.post(`${this.$store.state.server}/account/activate`, {login: this.auth_login, activateCode: this.actCode})
                     .then(res => {
                         if(res.status == 200)
                         {

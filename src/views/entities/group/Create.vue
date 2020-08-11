@@ -90,7 +90,7 @@ export default {
             {
                 this.create_req = true
                 this.$axios
-                    .post(`${this.server}/createGroup`, this.newGroup)
+                    .post(`${this.server}/groups/create`, this.newGroup)
                     .then(() => {
                         this.create_req = false
                         this.newGroup.Name = ''
@@ -109,7 +109,7 @@ export default {
         fetchAT() {
         this.disableAT = true
         this.$axios
-            .get(`${this.server}/get_at?UserID=${this.auth_id}`)
+            .get(`${this.server}/groups/age-types/get?UserID=${this.auth_id}`)
             .then((AgeTypes) => {
             this.AgeTypes = []
              AgeTypes.data.forEach(at => {

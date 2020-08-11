@@ -35,7 +35,7 @@ name: "Invites",
     genInv(){
       this.cr_inv_req = true
       this.$axios
-          .post(`${this.server}/createInvitation`, {EntranceNum: 1, GroupID: this.$route.params.groupID})
+          .post(`${this.server}/groups/trainees/invitations/create`, {EntranceNum: 1, GroupID: this.$route.params.groupID})
           .then(()=>{
             this.cr_inv_req = false
             this.getInvites()
@@ -46,7 +46,7 @@ name: "Invites",
       return new Promise((resolve, reject) => {
         if(this.showInvites) {
           this.$axios
-              .get(`${this.server}/get_invitations?GroupID=${this.$route.params.groupID}`)
+              .get(`${this.server}/groups/trainees/invitations/get?GroupID=${this.$route.params.groupID}`)
               .then(res => {
                 this.invites = res.data
                 resolve()
