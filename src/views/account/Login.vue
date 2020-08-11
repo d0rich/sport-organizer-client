@@ -21,9 +21,12 @@
                 type='password'
                 ></v-text-field>
             </v-row>
-            <v-row cols="12" class="error--text mb-4">
+            <v-row cols="12" class="error--text">
                 {{validMessage}}
             </v-row>
+            <v-alert type="error" :value="error" transition="scale-transition">
+              Ошибка: комбинация данных логина и пароля не найдена
+            </v-alert>
             <v-row cols="12" md="4">
                 <v-spacer></v-spacer>
 
@@ -47,6 +50,7 @@ export default {
     name: 'Login',
     data(){
         return{
+          error: false,
             valid: false,
             validMessage: '',
             log_req: false,
@@ -70,7 +74,7 @@ export default {
                 })
                 .catch(err=>{
                     console.error(err)
-                    this.validMessage = 'Ошибка: комбинация данных логина и пароля не найдена'
+                    this.error = true
                     this.log_req = false
                 })
         }

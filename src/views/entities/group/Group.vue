@@ -43,7 +43,9 @@
                 </router-link>
             </div>
         </v-skeleton-loader>
-
+        <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
+          <CreateTrinerInv />
+        </v-skeleton-loader>
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
             <div class="text-h8">
                 {{`Состав группы:`}}
@@ -59,16 +61,7 @@
             </div>
         </v-skeleton-loader>
         <v-skeleton-loader v-if="showInvites" :loading="onLoad" transition="fade-transition" type="list-item">
-          <v-list style="max-height: 300px; overflow-y: scroll">
-            <v-subheader>Пригласительные коды:</v-subheader>
-            <v-list-item v-for="invite in invites" :key="invite.Code" >
-              {{invite.Code}}
-            </v-list-item>
-            <v-divider/>
-            <v-list-item link>
-              <v-list-item-action color="primary" @click="genInv()">Создать пригласительный код</v-list-item-action>
-            </v-list-item>
-          </v-list>
+          <Invites showInvites="showInvites" />
         </v-skeleton-loader>
 
     </div>    
@@ -76,14 +69,16 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import CreateTrinerInv from "@/views/entities/group/trainer/CreateInv"
+import Invites from "@/views/entities/group/trainee/Invites";
 export default {
     name: 'Group',
     data(){
         return{
-            cr_inv_req: false,
-            invites: []
+
         }
     },
+  components:{ CreateTrinerInv, Invites },
     computed:{
         ...mapGetters(['watch_group', 'get_auth_user']),
         showInvites(){
@@ -92,48 +87,13 @@ export default {
     },
     methods:{
         ...mapActions(['fetch_group_data']),
-        genInv(){
-            this.cr_inv_req = true
-            this.$axios
-            .post(`${this.server}/createInvitation`, {EntranceNum: 1, GroupID: this.$route.params.groupID})
-            .then(()=>{
-                this.cr_inv_req = false
-                this.getInvites()
-            })
-            .catch(err => console.error(err))
-        },
-      getInvites(){
-          return new Promise((resolve, reject) => {
-            if(this.showInvites) {
-              this.$axios
-                  .get(`${this.server}/get_invitations?GroupID=${this.$route.params.groupID}`)
-                  .then(res => {
-                    this.invites = res.data
-                    resolve()
-                  })
-                  .catch(err => {
-                    console.error(err)
-                    reject(err)
-                  })
-            }
-            else {
-              resolve()
-            }
-          })
 
-      }
-    },
-    watch:{
-      get_auth_user(){
-        this.getInvites()
-      }
     },
     mounted(){
         this.loaderOn()
         this.fetch_group_data(this.$route.params.groupID)
             .then(()=>{
-              this.getInvites()
-              .then(() => this.loaderOff())
+              this.loaderOff()
             })
     },
 }

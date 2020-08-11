@@ -22,6 +22,7 @@
               :rules="[rules.req, rules.first]"
               required
               dense
+              type="number"
               @input="editSA()"
               class="px-3"
               style="width: 3em"
@@ -32,6 +33,7 @@
               :rules="[rules.req, rules.second]"
               required
               dense
+              type="number"
               @input="editEA()"
               class="px-3"
               style="width: 3em"
