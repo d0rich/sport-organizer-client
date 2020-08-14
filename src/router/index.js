@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import Profile from '../views/profile/Profile.vue'
 import Sections from '../views/profile/Sections.vue'
 import Groups from "@/views/profile/Groups";
+import Events from "@/views/profile/Events";
 
 
 import CreateSection from '../views/entities/section/Create.vue'
@@ -42,6 +43,11 @@ const routes = [{
     path: '/profile/:login/groups',
     name: 'Groups',
     component: Groups
+  },
+  {
+    path: '/profile/:login/events',
+    name: 'Events',
+    component: Events
   },
   {
     path: '/sections/create',

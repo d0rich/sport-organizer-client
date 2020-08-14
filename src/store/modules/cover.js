@@ -5,6 +5,7 @@ export default {
       { name: 'Sections', text: 'Мои секции', icon: 'mdi-ballot', loggedIn: true, trainer: true, badge: true, badgeKey: 'Sections' },
       { name: 'Groups', text: 'Мои группы', icon: 'mdi-account-group', loggedIn: true, trainer: true, badge: true, badgeKey: 'TrainerIn' },
       { name: 'Groups', text: 'Мои группы', icon: 'mdi-account-group', loggedIn: true, trainer: false, badge: true, badgeKey: 'TraineeIn' },
+      { name: 'Events', text: 'Мои события', icon: 'mdi-calendar', loggedIn: true, trainer: null, badge: false, badgeKey: '' },
       { name: 'Login', text: 'Войти', icon: 'mdi-login', loggedIn: false, trainer: null, badge: false },
       { name: 'Register', text: 'Регистрация', icon: 'mdi-account-plus', loggedIn: false, trainer: null, badge: false }
     ]

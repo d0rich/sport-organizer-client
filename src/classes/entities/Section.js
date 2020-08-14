@@ -1,7 +1,7 @@
 import {Sport, User, Group} from "@/classes";
 
 export class Section {
-    constructor(section = {ID: null, Groups: [], User: new User(), 'Sport-type': new Sport()}) {
+    constructor(section = {ID: null, Groups: [], Trainers: [], User: new User(), 'Sport-type': new Sport()}) {
         this.ID = section.ID
         this.Name = section.Name
         this.Description = section.Description
@@ -12,6 +12,12 @@ export class Section {
         if(section.Groups){
             section.Groups.forEach(group => {
                 this.Groups.push(new Group(group))
+            })
+        }
+        this.Trainers = []
+        if(section.Trainers){
+            section.Trainers.forEach(trainer => {
+                this.Trainers.push(new User(trainer))
             })
         }
     }

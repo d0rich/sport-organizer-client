@@ -28,6 +28,20 @@
                 {{watch_section.Description}}
             </v-sheet>
         </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
+        <div class="text-h8">
+          {{`Тренерский состав:`}}
+        </div>
+      </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="chip" class="pa-2">
+        <div>
+          <router-link v-for="trainer in watch_section.Trainers" :key="trainer.ID" :to="{name: 'Profile', params: { login: trainer.Login }}">
+            <v-chip  class="ma-2" color="primary">
+              {{`${trainer.Name} ${trainer.Surname} (${trainer.Login})`}}
+            </v-chip>
+          </router-link>
+        </div>
+      </v-skeleton-loader>
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
             <div class="text-h8">
                 {{`Группы:`}}

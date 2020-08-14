@@ -1,13 +1,16 @@
 <template>
   <div>
     <div v-if="$store.state.trainerMode">
+      <Invites @usedinv="fetch_profile_data($route.params.login)" />
       <v-list >
         <v-subheader>Группы, которые тренирует пользователь {{user_profile.Login}} ({{user_profile.TrainerIn.length}}):</v-subheader>
+        <transition-group name="slide-fade">
         <router-link v-for="group in user_profile.TrainerIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
           <v-list-item link >
             {{group.Name}}
           </v-list-item>
         </router-link>
+        </transition-group>
       </v-list>
     </div>
 
@@ -30,11 +33,13 @@
       <v-list >
         <v-subheader>Группы, в которых тренируется пользователь {{user_profile.Login}} ({{user_profile.TraineeIn.length}}):</v-subheader>
         <v-divider />
+        <transition-group name="slide-fade">
         <router-link v-for="group in user_profile.TraineeIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
           <v-list-item link >
             {{group.Name}}
           </v-list-item>
         </router-link>
+        </transition-group>
       </v-list>
     </div>
   </div>
@@ -42,9 +47,12 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-
+import Invites from "@/views/entities/group/trainer/Invites";
 export default {
 name: "Groups",
+  components:{
+    Invites
+  },
   data(){
   return{
     invReq: false,
