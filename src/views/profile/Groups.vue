@@ -25,7 +25,12 @@
               outlined
           ></v-text-field>
         </v-row>
-        <v-row cols="12" md="4" class="error--text mb-4 px-5">{{errMessage}}</v-row>
+        <v-alert type="error" :value="error" transition="scale-transition">
+          Ошибка: данный пригласительный код недействителен.
+        </v-alert>
+        <v-alert type="success" :value="success" transition="scale-transition">
+          Приглашение успешно принято.
+        </v-alert>
         <v-btn color="primary" class="mt-4" :loading="invReq" :disabled="invReq" block @click="useInv()">
           Присоединиться к группе
         </v-btn>
@@ -55,6 +60,8 @@ name: "Groups",
   },
   data(){
   return{
+    error: false,
+    success: false,
     invReq: false,
     errMessage: '',
     valid: false,
@@ -77,12 +84,14 @@ name: "Groups",
             .then(() => {
               this.fetch_profile_data(this.$route.params.login)
               this.invReq = false
+              this.error = false
+              this.success = true
               this.login()
             })
-            .catch(err => {
-              console.error(err)
+            .catch(() => {
               this.invReq = false
-              this.errMessage = 'Данный код недействителен'
+              this.error = true
+              this.success = false
             })
       }
       else{

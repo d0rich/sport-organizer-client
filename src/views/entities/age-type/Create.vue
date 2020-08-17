@@ -40,12 +40,12 @@
           ></v-text-field>
           {{' лет'}}
         </v-row>
-        <v-row cols="12" md="4" class="error--text">
-          {{errMessage}}
-        </v-row>
-        <v-row cols="12" md="4" class="secondary--text">
-          {{sucMessage}}
-        </v-row>
+        <v-alert type="error" :value="error" transition="scale-transition">
+          Ошибка при создании возрастной группы. Попробуйте повторить операцию позже.
+        </v-alert>
+        <v-alert type="success" :value="success" transition="scale-transition">
+          Возрастная группа успешно создана
+        </v-alert>
         <v-btn block :disabled="create_req" :loading="create_req" color="secondary" type="submit">Создать</v-btn>
       </v-form>
       </v-expansion-panel-content>
@@ -64,8 +64,6 @@ name: "CreateAgeType",
       opened: false,
       valid: false,
       create_req: false,
-      errMessage: '',
-      sucMessage:'',
       max: 50,
       newAT: {
         Name: '',
@@ -81,6 +79,8 @@ name: "CreateAgeType",
         first: (v) => (parseInt(v) < parseInt(this.newAT.EA)) || 'Первое число должно быть меньше второго',
         second: (v) => (parseInt(v) > parseInt(this.newAT.SA)) || 'Второе число должно быть больше первого',
       },
+      error: false,
+      success: false
     }
   },
   computed:{
@@ -99,14 +99,14 @@ name: "CreateAgeType",
               this.newAT.SA = '0'
               this.newAT.SA = '99'
               this.$emit('created')
-              this.sucMessage = 'Группа успешно создана'
-              this.errMessage = ""
+              this.success = true
+              this.error = false
             })
             .catch(err => {
               console.error(err)
               this.create_req = false
-              this.errMessage = "Ошибка при создании возрастной группы. Попробуйте повторить операцию позже."
-              this.sucMessage = ''
+              this.success = false
+              this.error = true
             })
       }
       else {this.$refs.form.validate()}

@@ -60,7 +60,8 @@
                 </router-link>
             </div>
         </v-skeleton-loader>
-        <v-skeleton-loader v-if="showInvites" :loading="onLoad" transition="fade-transition" type="list-item">
+        <v-skeleton-loader v-if="showInvites || get_auth_user.Sections.find(item => item.ID === watch_group.Section.ID) || get_auth_user.TrainerIn.find(item => item.ID === watch_group.ID)"
+          :loading="onLoad" transition="fade-transition" type="list-item">
           <Invites showInvites="showInvites" />
         </v-skeleton-loader>
 

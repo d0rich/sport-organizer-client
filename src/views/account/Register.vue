@@ -56,7 +56,6 @@
         :nudge-right="40"
         transition="scale-transition"
         min-width="290px"
-        style="px-0"
       >
         <template v-slot:activator="{ on }">
           <v-text-field
@@ -77,7 +76,7 @@
           @input="calendar = false"
           locale="ru"
           min="1900"
-          :max="Today"
+          :max="Today([0, 1, 0])"
         ></v-date-picker>
       </v-menu>
       <v-row cols="12" md="4">

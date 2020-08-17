@@ -44,6 +44,9 @@ export default new Vuex.Store({
     modeName(state) {
       if (state.trainerMode === true) return 'Режим тренера'
       else return 'Режим спортсмена'
+    },
+    tMode(state){
+      return state.trainerMode
     }
   },
   modules: { user, cover, fetch }

@@ -56,7 +56,7 @@
                 </router-link>
             </div>
         </v-skeleton-loader>
-        <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="button" class="pa-2">
+        <v-skeleton-loader v-if="get_auth_user.Sections.find(item => item.ID === watch_section.ID)" :loading="onLoad" transition="fade-transition" type="button" class="pa-2">
             <v-btn color=primary @click="crGroup = true">
                 Прикрепить новую группу
             </v-btn>
@@ -84,7 +84,7 @@ export default {
         CreateGroup
         },
     computed: {
-        ...mapGetters(['watch_section']),
+        ...mapGetters(['watch_section', 'get_auth_user']),
         sport(){
             if(this.watch_section['Sport-type']) return this.watch_section['Sport-type'].Name
             else return null

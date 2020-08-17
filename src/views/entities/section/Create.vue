@@ -13,12 +13,12 @@
                 ></v-text-field>
             </v-row>
             <v-row cols="12" md="4">
-                <v-text-field
+                <v-textarea
                 v-model="sectionData.Description"
                 :rules="[]"
                 label="Описание"
                 outlined
-                ></v-text-field>
+                ></v-textarea>
             </v-row>
             <v-row cols="12" md="4">
                 <v-select

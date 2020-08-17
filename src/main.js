@@ -22,10 +22,6 @@ Vue.mixin({
   computed: {
     ...mapGetters(['onLoad', 'modeName']),
     ...mapState(['server']),
-    Today() {
-      const date = new Date()
-      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-    }
   },
   methods: {
     ...mapMutations(['loaderOn', 'loaderOff', 'setMode']),
@@ -38,6 +34,19 @@ Vue.mixin({
         res += `&${param[0]}=${param[1]}`
       });
       return res
+    },
+    twoSimbols(number){
+      if (number<10) return `0${number}`
+      else return `${number}`
+    },
+    dateFormatted(date) {
+      if (!date) return "";
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
+    },
+    Today( delay = [0, 0, 0] ) {
+      const date = new Date()
+      return `${date.getFullYear() + delay[0]}-${date.getMonth() + 1 + delay[1]}-${date.getDate() + delay[2]}`
     }
   },
 
