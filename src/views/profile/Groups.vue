@@ -1,21 +1,31 @@
 <template>
   <div>
     <div v-if="$store.state.trainerMode">
-      <Invites @usedinv="fetch_profile_data($route.params.login)" />
-      <v-list >
-        <v-subheader>Группы, которые тренирует пользователь {{user_profile.Login}} ({{user_profile.TrainerIn.length}}):</v-subheader>
-        <transition-group name="slide-fade">
-        <router-link v-for="group in user_profile.TrainerIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
-          <v-list-item link >
-            {{group.Name}}
-          </v-list-item>
-        </router-link>
-        </transition-group>
-      </v-list>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="card" >
+        <Invites v-if="get_auth_user.Login === $route.params.login" @usedinv="fetch_profile_data($route.params.login)" />
+      </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item" >
+        <v-list >
+          <v-subheader>Группы, которые тренирует пользователь {{user_profile.Login}} ({{user_profile.TrainerIn.length}}):</v-subheader>
+          <transition-group name="slide-fade">
+          <router-link v-for="group in user_profile.TrainerIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
+            <v-list-item link >
+              {{group.Name}}
+            </v-list-item>
+          </router-link>
+          </transition-group>
+        </v-list>
+      </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item" >
+        <v-spacer />
+      </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item" >
+        <v-spacer />
+      </v-skeleton-loader>
     </div>
 
     <div v-if="!$store.state.trainerMode" class="mt-10">
-      <v-form ref="form" v-model="valid" @submit.prevent="useInv()">
+      <v-form  v-if="get_auth_user.Login === $route.params.login" ref="form" v-model="valid" @submit.prevent="useInv()">
         <v-row cols="12" md="2" class="px-5">
           <v-text-field
               v-model="invCode"
@@ -23,6 +33,8 @@
               label="Пригласительный код"
               required
               outlined
+              :loading="onLoad"
+              :disabled="onLoad"
           ></v-text-field>
         </v-row>
         <v-alert type="error" :value="error" transition="scale-transition">
@@ -31,21 +43,31 @@
         <v-alert type="success" :value="success" transition="scale-transition">
           Приглашение успешно принято.
         </v-alert>
-        <v-btn color="primary" class="mt-4" :loading="invReq" :disabled="invReq" block @click="useInv()">
-          Присоединиться к группе
-        </v-btn>
+        <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="button" >
+          <v-btn color="primary" class="mt-4" :loading="invReq" :disabled="invReq" block @click="useInv()">
+            Присоединиться к группе
+          </v-btn>
+        </v-skeleton-loader>
       </v-form>
-      <v-list >
-        <v-subheader>Группы, в которых тренируется пользователь {{user_profile.Login}} ({{user_profile.TraineeIn.length}}):</v-subheader>
-        <v-divider />
-        <transition-group name="slide-fade">
-        <router-link v-for="group in user_profile.TraineeIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
-          <v-list-item link >
-            {{group.Name}}
-          </v-list-item>
-        </router-link>
-        </transition-group>
-      </v-list>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item">
+        <v-list >
+          <v-subheader>Группы, в которых тренируется пользователь {{user_profile.Login}} ({{user_profile.TraineeIn.length}}):</v-subheader>
+          <v-divider />
+          <transition-group name="slide-fade">
+          <router-link v-for="group in user_profile.TraineeIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
+            <v-list-item link >
+              {{group.Name}}
+            </v-list-item>
+          </router-link>
+          </transition-group>
+        </v-list>
+      </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item" >
+        <v-spacer />
+      </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item" >
+        <v-spacer />
+      </v-skeleton-loader>
     </div>
   </div>
 </template>

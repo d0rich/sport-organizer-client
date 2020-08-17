@@ -1,11 +1,12 @@
 <template>
     <div>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item" >
         <v-list>
           <v-list-item>
             <v-list-item-title>Секции пользователя {{user_profile.Login}} ({{user_profile.Sections.length}}):</v-list-item-title>
           </v-list-item>
           <v-divider/>
-            <v-list-item link>
+            <v-list-item v-if="get_auth_user.Login === $route.params.login" link>
               <router-link :to="{name: 'CreateSection'}">
                 <v-list-item-action class="secondary--text lighten-3" >Создать секцию...</v-list-item-action>
               </router-link>
@@ -17,6 +18,13 @@
               </v-list-item>
             </router-link>
         </v-list>
+      </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item" >
+        <v-spacer />
+      </v-skeleton-loader>
+      <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item" >
+        <v-spacer />
+      </v-skeleton-loader>
     </div>
 </template>
 
@@ -29,7 +37,7 @@ export default {
     }
   },
   computed:{
-    ...mapGetters(['user_profile']),
+    ...mapGetters(['user_profile', 'get_auth_user']),
     secNumber(){
       if (this.user_profile.Sections) return this.user_profile.Sections.length
       else return 0
