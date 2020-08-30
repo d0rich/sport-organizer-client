@@ -45,25 +45,34 @@ export default {
         }
     },
     actions: {
-        fetch_auth_user(ctx, id = '') {
-            axios
-                .get(`${ctx.rootState.server}/users/get?id=${id}`)
-                .then(response => {
-                    ctx.commit('set_auth_user', response.data)
-                })
-                .catch(err => {
-                    console.error(err)
-                })
+        async fetch_auth_user(ctx, id = '') {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get(`${ctx.rootState.server}/users/get?id=${id}`)
+                    .then(response => {
+                        ctx.commit('set_auth_user', response.data)
+                        ctx.commit('loaderOff')
+                        resolve()
+                    })
+                    .catch(err => {
+                        console.error(err)
+                        reject()
+                    })
+            })
         },
-        login(ctx, token = null) {
-            ctx.commit('set_token', token)
-            token = ctx.state.token
-            const decToken = decipher_token(token)
-            if (decToken != null) {
-                ctx.dispatch('fetch_auth_user', decToken.payload.userID)
-            } else {
-                ctx.dispatch('logout')
-            }
+        async login(ctx, token = null) {
+            return new Promise((resolve, reject) => {
+                ctx.commit('loaderOn')
+                ctx.commit('set_token', token)
+                token = ctx.state.token
+                const decToken = decipher_token(token)
+                if (decToken != null) {
+                    ctx.dispatch('fetch_auth_user', decToken.payload.userID).then(resolve())
+                } else {
+                    ctx.dispatch('logout')
+                    reject()
+                }
+            })
         },
         logout(ctx) {
             ctx.commit('set_auth_user', new User())

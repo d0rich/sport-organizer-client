@@ -8,8 +8,8 @@
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
             <div class="text-h8">
                 {{`Создатель секции:`}}
-                <router-link :to="{name: 'Profile', params:{ login: creatorLogin }}" class="text--primary">
-                    {{`${creatorName} (${creatorLogin})`}}
+                <router-link :to="watch_section.User.route" class="text--primary">
+                    {{watch_section.User.fullNameLogin}}
                 </router-link>
             </div>
         </v-skeleton-loader>
@@ -35,9 +35,9 @@
       </v-skeleton-loader>
       <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="chip" class="pa-2">
         <div>
-          <router-link v-for="trainer in watch_section.Trainers" :key="trainer.ID" :to="{name: 'Profile', params: { login: trainer.Login }}">
+          <router-link v-for="trainer in watch_section.Trainers" :key="trainer.ID" :to="trainer.route">
             <v-chip  class="ma-2" color="primary">
-              {{`${trainer.Name} ${trainer.Surname} (${trainer.Login})`}}
+              {{trainer.fullNameLogin}}
             </v-chip>
           </router-link>
         </div>
@@ -49,7 +49,7 @@
         </v-skeleton-loader>
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="chip" class="pa-2">
             <div>
-                <router-link v-for="group in watch_section.Groups" :key="group.ID" :to="{name: 'Group', params: { groupID: group.ID }}">
+                <router-link v-for="group in watch_section.Groups" :key="group.ID" :to="group.route">
                     <v-chip  class="ma-2" color="primary">
                         {{group.Name}}
                     </v-chip>
@@ -67,21 +67,54 @@
             <CreateGroup @created="group_created()" />
             </v-card>
         </v-dialog>
+      <v-divider />
 
+      <div class="text-h6 row mx-0">
+        <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
+          <div>
+            {{`Новости секции:`}}
+          </div>
+        </v-skeleton-loader>
+        <v-skeleton-loader v-if="get_auth_user.Sections.find(item => item.ID === watch_section.ID)
+                            || watch_section.Trainers.find(item => item.ID === get_auth_user.ID)  "
+                           :loading="onLoad" transition="fade-transition" type="button" class="pa-2">
+          <v-btn color=primary @click="crNews = true">
+            + пост
+          </v-btn>
+        </v-skeleton-loader>
+      </div>
+      <v-dialog scrollable v-model="crNews" max-width="600" >
+          <CreateNews :section="watch_section" @created="news_created()" />
+      </v-dialog>
+        <Event @close="selectedOpen = false"
+               :selected-event="selectedEvent" :selected-element="selectedElement" :selected-open="selectedOpen" />
+        <transition-group name="slide-fade">
+          <NewsNote class="my-2 mx-8" v-for="newsNote in news" :key="newsNote.ID"
+                    :news-note="newsNote" @show-event="showEvent" />
+        </transition-group>
     </div>
 </template>
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import CreateGroup from '../group/Create.vue'
+import CreateNews from '../news/Create'
+import Event from "@/views/entities/events/Event";
+import NewsNote from "@/views/entities/news/NewsNote";
+import {ClientEvent, News} from "@/classes";
 export default {
     name: 'Section',
     data(){
         return{
-            crGroup: false
+          crGroup: false,
+          crNews: false,
+          selectedEvent: new ClientEvent(),
+          selectedElement: null,
+          selectedOpen: false,
+          news: []
         }
     },
     components: {
-        CreateGroup
+        CreateGroup, Event, NewsNote, CreateNews
         },
     computed: {
         ...mapGetters(['watch_section', 'get_auth_user']),
@@ -89,16 +122,6 @@ export default {
             if(this.watch_section['Sport-type']) return this.watch_section['Sport-type'].Name
             else return null
         },
-        creatorLogin(){
-            if(this.watch_section.User) 
-                return this.watch_section.User.Login
-            else return null
-        },
-        creatorName(){
-            if(this.watch_section.User) 
-                return `${this.watch_section.User.Name} ${this.watch_section.User.Surname}`
-            else return null
-        }
     },
     methods:{
         ...mapActions(['fetch_section_data']),
@@ -110,10 +133,42 @@ export default {
                 this.loaderOff()
             })
 
+        },
+      news_created(){
+        this.crNews = false
+        this.getNews()
+      },
+      getNews(){
+        this.$axios
+            .get(`${this.server}/news-notes/get/byParams?sections=${JSON.stringify([this.$route.params.sectionID])}&sports=${JSON.stringify([])}`)
+            .then( res => {
+              this.news = []
+              res.data.forEach( news =>{
+                this.news.push(new News(news))
+              } )
+            })
+      },
+      showEvent ({nativeEvent, event}) {
+        event = new ClientEvent(event)
+        const open = () => {
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          setTimeout(() => this.selectedOpen = true, 10)
         }
+
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          setTimeout(open, 10)
+        } else {
+          open()
+        }
+
+        nativeEvent.stopPropagation()
+      }
     },
     mounted(){
-    this.group_created()
+      this.group_created()
+      this.getNews()
   }
 }
 </script>

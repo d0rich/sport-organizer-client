@@ -2,13 +2,13 @@
   <div>
     <div v-if="$store.state.trainerMode">
       <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="card" >
-        <Invites v-if="get_auth_user.Login === $route.params.login" @usedinv="fetch_profile_data($route.params.login)" />
+        <Invites @usedinv="fetch_auth_user(get_auth_user.ID)" />
       </v-skeleton-loader>
       <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item" >
         <v-list >
-          <v-subheader>Группы, которые тренирует пользователь {{user_profile.Login}} ({{user_profile.TrainerIn.length}}):</v-subheader>
+          <v-subheader>Группы, которые тренирует пользователь {{get_auth_user.Login}} ({{get_auth_user.TrainerIn.length}}):</v-subheader>
           <transition-group name="slide-fade">
-          <router-link v-for="group in user_profile.TrainerIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
+          <router-link v-for="group in get_auth_user.TrainerIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
             <v-list-item link >
               {{group.Name}}
             </v-list-item>
@@ -51,10 +51,10 @@
       </v-form>
       <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="list-item">
         <v-list >
-          <v-subheader>Группы, в которых тренируется пользователь {{user_profile.Login}} ({{user_profile.TraineeIn.length}}):</v-subheader>
+          <v-subheader>Группы, в которых тренируется пользователь {{get_auth_user.Login}} ({{get_auth_user.TraineeIn.length}}):</v-subheader>
           <v-divider />
           <transition-group name="slide-fade">
-          <router-link v-for="group in user_profile.TraineeIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
+          <router-link v-for="group in get_auth_user.TraineeIn" :key="group.ID" :to="{ name: 'Group', params: { groupID: group.ID } }">
             <v-list-item link >
               {{group.Name}}
             </v-list-item>
@@ -121,13 +121,6 @@ name: "Groups",
       }
     }
   },
-  mounted(){
-    this.loaderOn()
-    this.fetch_profile_data(this.$route.params.login)
-        .then(()=>{
-          this.loaderOff()
-        })
-  }
 }
 </script>
 

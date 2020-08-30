@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 
 import Profile from '../views/profile/Profile.vue'
+import NewsAmount from "@/views/entities/news/NewsAmount";
 import Sections from '../views/profile/Sections.vue'
 import Groups from "@/views/profile/Groups";
 import Events from "@/views/profile/Events";
@@ -35,17 +36,22 @@ const routes = [{
     component: Profile
   },
   {
-    path: '/profile/:login/sections',
+    path: '/news',
+    name: 'News',
+    component: NewsAmount
+  },
+  {
+    path: '/sections',
     name: 'Sections',
     component: Sections
   },
   {
-    path: '/profile/:login/groups',
+    path: '/groups',
     name: 'Groups',
     component: Groups
   },
   {
-    path: '/profile/:login/events',
+    path: '/events',
     name: 'Events',
     component: Events
   },

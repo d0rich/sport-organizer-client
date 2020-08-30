@@ -36,9 +36,9 @@
         </v-skeleton-loader>
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="chip" class="pa-2">
             <div>
-                <router-link v-for="trainer in watch_group.Trainers" :key="trainer.ID" :to="{name: 'Profile', params: { login: trainer.Login }}">
+                <router-link v-for="trainer in watch_group.Trainers" :key="trainer.ID" :to="trainer.route">
                     <v-chip  class="ma-2" color="primary">
-                        {{`${trainer.Name} ${trainer.Surname} (${trainer.Login})`}}
+                        {{trainer.fullNameLogin}}
                     </v-chip>
                 </router-link>
             </div>
@@ -53,9 +53,9 @@
         </v-skeleton-loader>
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="chip" class="pa-2">
             <div>
-                <router-link v-for="trainee in watch_group.Trainees" :key="trainee.ID" :to="{name: 'Profile', params: { login: trainee.Login }}">
+                <router-link v-for="trainee in watch_group.Trainees" :key="trainee.ID" :to="trainee.route">
                     <v-chip  class="ma-2" color="primary">
-                        {{`${trainee.Name} ${trainee.Surname} (${trainee.Login})`}}
+                        {{trainee.fullNameLogin}}
                     </v-chip>
                 </router-link>
             </div>

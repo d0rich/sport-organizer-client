@@ -43,6 +43,9 @@
             ></v-select>
           </v-row>
           <v-row cols="12" class="mx-0 justify-center">
+            <v-checkbox v-model="allDay" label="Весь день"></v-checkbox>
+          </v-row>
+          <v-row cols="12" class="mx-0 justify-center">
             <v-menu
                 ref="calendar"
                 v-model="startDatePicker"
@@ -211,6 +214,7 @@ name: "CreateEvent",
       success: false,
       error: false,
       crRequest: false,
+      allDay: false,
       newEvent: {
         Groups: [],
         Name: '',
@@ -247,8 +251,9 @@ name: "CreateEvent",
       if(this.valid && !this.crRequest)
       {
         let newEvent = this.newEvent
-        newEvent.ST = `${this.startDate} ${this.startTime}`
-        newEvent.ET = `${this.endDate} ${this.endTime}`
+        newEvent.ST = `${this.startDate} ${this.startTime}${this.timeZone}`
+        newEvent.ET = `${this.endDate} ${this.endTime}${this.timeZone}`
+        newEvent.Timed = !this.allDay
         this.crRequest = true
         this.$axios.post(`${this.server}/events/create`, newEvent)
             .then(() =>{

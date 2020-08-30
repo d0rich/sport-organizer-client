@@ -20,12 +20,17 @@ Vue.mixin({
     return {}
   },
   computed: {
-    ...mapGetters(['onLoad', 'modeName']),
-    ...mapState(['server']),
+    ...mapGetters(['onLoad', 'modeName', 'tMode']),
+    ...mapState(['server', 'token']),
+    timeZone(){
+      const offset = - (new Date().getTimezoneOffset()/60)
+      if(offset > 0) return `+${this.twoSimbols(offset)}`
+      else return `-${this.twoSimbols(offset)}`
+    }
   },
   methods: {
     ...mapMutations(['loaderOn', 'loaderOff', 'setMode']),
-    ...mapActions(['sportsmanMode', 'trainerMode', 'login']),
+    ...mapActions(['sportsmanMode', 'trainerMode', 'login', 'fetch_auth_user']),
     send_params(params) {
       //[['key', param],['key', param],['key', param]]
       let res = `?${params[0][0]}=${params[0][1]}`
@@ -36,8 +41,13 @@ Vue.mixin({
       return res
     },
     twoSimbols(number){
+      number = Math.abs(number)
       if (number<10) return `0${number}`
       else return `${number}`
+    },
+    dateTime(date){
+      date = new Date(date)
+      return `${this.twoSimbols(date.getDate())}/${this.twoSimbols(date.getMonth() + 1)}/${date.getFullYear()} ${this.twoSimbols(date.getHours())}:${this.twoSimbols(date.getMinutes())}`
     },
     dateFormatted(date) {
       if (!date) return "";
@@ -47,7 +57,7 @@ Vue.mixin({
     Today( delay = [0, 0, 0] ) {
       const date = new Date()
       return `${date.getFullYear() + delay[0]}-${date.getMonth() + 1 + delay[1]}-${date.getDate() + delay[2]}`
-    }
+    },
   },
 
 })

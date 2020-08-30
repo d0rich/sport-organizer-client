@@ -21,4 +21,7 @@ export class Group{
             })
         }
     }
+    get route(){
+        return { name: 'Group', params: { groupID: this.ID } }
+    }
 }

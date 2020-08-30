@@ -1,15 +1,15 @@
 <template>
   <v-app id="app" class="overflow-hidden">
     <CoverElements />
-    <div id="contentWindow" class="overflow-y-auto pt-11" style="max-height:100vh">
+    <v-sheet color="bg" id="contentWindow" class="overflow-y-auto pt-11" style="max-height:100vh">
       <ConfirmEmail />
       <div id="content">
         <transition name="slide-fade" mode="out-in">
           <router-view  style="min-height: 80vh"/>
         </transition>
-      </div> 
+      </div>
       <Footer class="mt-15" />
-    </div>
+    </v-sheet>
   </v-app>
 </template>
 
@@ -43,7 +43,13 @@ export default Vue.extend({
 <style>
 html{
   font-family: 'Jura';
-  font-size: 20px;
+  font-size: 17px;
+}
+@media(max-width: 700px){
+  html{
+    font-size: 14px
+  }
+
 }
 #app {
   overflow:hidden;
@@ -62,7 +68,6 @@ a{
   text-decoration: none
 }
 a:visited{
-  color: var(--textcolor)
 }
 #nav a.router-link-exact-active {
   color: #42b983;

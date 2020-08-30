@@ -1,12 +1,16 @@
-import {Event} from '@/classes'
+import {Event, Notification} from '@/classes'
 import colors from 'vuetify/lib/util/colors'
 export class ClientEvent{
     constructor( event = new Event() ) {
+        this.ID = event.ID
         this.name = event.Name
         this.description = event.Description
-        this.start = new Date(event.TimeRange[0].value)
-        this.end = new Date(event.TimeRange[1].value)
-        this.timed = true
+        this.nots = []
+        this.myNots = []
+        this.start = new Date(event.TimeRange[0])
+        this.end = new Date(event.TimeRange[1])
+        this.timed = event.Timed
+        this.type = event['Event-type']
         switch (event.EventTypeID) {
             case 1:
                 this.color = colors.purple.base
@@ -33,5 +37,19 @@ export class ClientEvent{
                 this.color = colors.green.base
                 break
         }
+        this.groups = event.Groups
+    }
+
+    fetchNots(nots = []){
+        this.nots = []
+        nots.forEach(not => {
+            this.nots.push(new Notification(not))
+        })
+    }
+    fetchMyNots(nots = []){
+        this.myNots = []
+        nots.forEach(not => {
+            this.myNots.push(new Notification(not))
+        })
     }
 }

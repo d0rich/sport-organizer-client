@@ -41,4 +41,14 @@ export class User {
             })
         }
     }
+
+    get fullName() {
+        return `${this.Name} ${this.Surname}`
+    }
+    get fullNameLogin(){
+        return `${this.fullName} (${this.Login})`
+    }
+    get route() {
+        return { name: 'Profile', params: { login: this.Login } }
+    }
 }

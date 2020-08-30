@@ -37,9 +37,9 @@
             ></v-select>
     </v-row>
 
-    <v-row cols="12" md="4" color=error>
-        {{errMessage}}
-    </v-row>
+    <v-alert type="error" :value="error" transition="scale-transition">
+      Ошибка при создании группы. Попробуйте повторить операцию позже.
+    </v-alert>
     <v-btn color=primary block type=submit :loading="create_req" :disabled="create_req">
         Прикрепить
     </v-btn>
@@ -78,7 +78,7 @@ export default {
       },
       AgeTypes: [],
       disableAT:false,
-      errMessage: ''
+      error: false
     };
   },
   computed: {
@@ -98,9 +98,8 @@ export default {
                         this.newGroup.AgeTypeID = ''
                         this.$emit('created')
                     })
-                    .catch(err => {
-                        console.error(err)
-                        this.errMessage = "Ошибка при создании группы. Попробуйте повторить операцию позже."
+                    .catch(() => {
+                        this.error = true
                         })
             }
             else {this.$refs.form.validate()}

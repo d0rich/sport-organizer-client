@@ -1,12 +1,12 @@
 import axios from 'axios'
-
+import {Section} from '@/classes'
 export default {
     state: {
-        section: {}
+        section: new Section()
     },
     mutations: {
         set_section(state, secData) {
-            state.section = secData
+            state.section = new Section(secData)
         }
     },
     actions: {
