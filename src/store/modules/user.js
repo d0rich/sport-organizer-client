@@ -1,22 +1,6 @@
 import axios from 'axios'
-import crypto from 'crypto'
 import '../../classes'
-import { User } from "@/classes";
-
-const decipher_token = function(token) {
-    if (token) {
-        const [enc_header, enc_payload, enc_signature] = token.split(".")
-        const header = JSON.parse(Buffer.from(enc_header, 'base64').toString('ascii'))
-        const payload = JSON.parse(Buffer.from(enc_payload, 'base64').toString('ascii'))
-        const signature = Buffer.from(enc_signature, 'base64').toString('ascii')
-        if (crypto.createHmac('sha256', 'S4vEHyg69aLL1uLLlk4').update(`${enc_header}.${enc_payload}`).digest('hex') === signature) {
-            return { header, payload }
-        } else {
-            localStorage.removeItem('token')
-            return null
-        }
-    }
-}
+import { User, DecToken } from "@/classes";
 
 export default {
     state: {
@@ -65,8 +49,8 @@ export default {
                 ctx.commit('loaderOn')
                 ctx.commit('set_token', token)
                 token = ctx.state.token
-                const decToken = decipher_token(token)
-                if (decToken != null) {
+                const decToken = new DecToken(token)
+                if (decToken.verified) {
                     ctx.dispatch('fetch_auth_user', decToken.payload.userID).then(resolve())
                 } else {
                     ctx.dispatch('logout')

@@ -69,6 +69,10 @@ const routes = [{
     path: '/groups/:groupID',
     name: 'Group',
     component: Group
+  },
+  {
+    path: '/*',
+    redirect: { name: 'Login' }
   }
 
 ]
