@@ -224,6 +224,7 @@ export default {
             .then(res=>{
               console.log(res)
               this.regSuccess = true
+              this.$router.push({name: 'Login'})
               })
         })
         
