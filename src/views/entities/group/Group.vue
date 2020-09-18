@@ -43,7 +43,8 @@
                 </router-link>
             </div>
         </v-skeleton-loader>
-        <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
+        <v-skeleton-loader v-if="showTrainerInv"
+            :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
           <CreateTrinerInv />
         </v-skeleton-loader>
         <v-skeleton-loader :loading="onLoad" transition="fade-transition" type="heading" class="pa-2">
@@ -83,6 +84,13 @@ export default {
     computed:{
         ...mapGetters(['watch_group', 'get_auth_user']),
         showInvites(){
+          let trainersID = []
+          this.watch_group.Trainers.forEach(trainer => {
+            trainersID.push(trainer.ID)
+          })
+          return this.get_auth_user.ID === this.watch_group.Section.UserID || trainersID.includes(this.get_auth_user.ID)
+        },
+        showTrainerInv(){
           return this.get_auth_user.ID === this.watch_group.Section.UserID
         }
     },
