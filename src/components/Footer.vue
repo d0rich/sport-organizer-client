@@ -1,20 +1,12 @@
 <template>
   <v-footer padless>
     <v-card flat tile style="width:100%" class="primary darken-4 white--text text-center">
-      <v-card-text>
-        <v-btn v-for="icon in icons" :key="icon" class="mx-4 white--text" icon>
-          <v-icon size="24px">{{ icon }}</v-icon>
-        </v-btn>
-      </v-card-text>
-
-      <v-card-text class="white--text pt-0" >
-          Создано в рамках летней практики
-      </v-card-text>
-      <v-divider></v-divider>
 
       <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} —
-        <strong>DoriChrome prod.</strong>
+        &copy; 2020
+        <a href="https://d0rich.github.io" target="_blank" style="color: white; text-decoration: underline">
+          Nikolay Dorofeev (d0rich)
+        </a>
       </v-card-text>
     </v-card>
   </v-footer>
